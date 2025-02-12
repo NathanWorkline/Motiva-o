@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel da Motivação</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            background: #1a1a1a;
+            border: 2px solid #e30613;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            padding: 20px 40px;
+            max-width: 1000px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        h1 span {
+            color: #e30613;
+        }
+
+        p {
+            font-size: 2.4rem;
+            margin: 20px 0;
+            color: #d3d3d3;
+        }
+
+        footer {
+            font-size: 1.8rem;
+            color: #d3d3d3;
+            margin-top: 20px;
+        }
+
+        /* Estilo da barra de progresso */
+        .progress-bar-container {
+            width: 100%;
+            height: 10px;
+            background: #333;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: #e30613;
+            transition: width 0.15s linear;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1><span>Painel</span> da Motivação</h1>
+        <p id="frase">Carregando...</p>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <footer>
+            <img src="Assets/logo.png" alt="WORKLINE group" style="max-width: 15%; height: auto;"> - Viva a Ergoprodutividade!
+          </footer>
+    </div>
+
+    <script>
+        const frases = [
+    "Você é capaz de conquistar tudo o que deseja.",
+    "Não importa o quão devagar você vá, desde que não pare.",
+    "O sucesso é o resultado da persistência.",
+    "Grandes conquistas exigem grandes desafios.",
+    "Acredite em si mesmo e tudo será possível.",
+    "O segredo do sucesso está na determinação.",
+    "Cada passo em direção ao seu objetivo é uma vitória.",
+    "A vida é feita de escolhas. Escolha seguir em frente.",
+    "A maior recompensa vem para aqueles que não desistem.",
+    "Nunca é tarde para começar de novo.",
+    "Seja a mudança que você deseja ver no mundo.",
+    "O sucesso é uma jornada, não um destino.",
+    "Nunca pare de tentar, mesmo quando a estrada parecer difícil.",
+    "Cada erro é uma oportunidade para aprender e melhorar.",
+    "O impossível é apenas uma questão de perspectiva.",
+    "Acredite no processo e siga em frente.",
+    "A única maneira de fazer um excelente trabalho é amar o que você faz.",
+    "Não tenha medo de recomeçar, às vezes é exatamente o que você precisa.",
+    "A vida recompensa aqueles que têm coragem de seguir seus sonhos.",
+    "Se você não lutar pelos seus sonhos, ninguém fará isso por você.",
+    "O sucesso não é final, o fracasso não é fatal: o que importa é a coragem de continuar.",
+    "Cada dificuldade é uma chance de aprender e crescer.",
+    "O maior obstáculo para o sucesso é o medo do fracasso.",
+    "Não importa quantas vezes você caia, o importante é levantar-se novamente.",
+    "Acredite no seu potencial e nunca desista.",
+    "O caminho para o sucesso começa com um primeiro passo.",
+    "Grandes coisas começam com pequenas atitudes.",
+    "O sucesso é a soma de pequenos esforços, repetidos diariamente.",
+    "A persistência é a chave para o sucesso.",
+    "O maior erro que você pode cometer é desistir antes de tentar.",
+    "Se você quer resultados diferentes, faça algo diferente.",
+    "Nunca deixe que o medo te impeça de tentar.",
+    "O segredo do sucesso é começar antes de se sentir pronto.",
+    "A cada dia que você persistir, está mais perto de alcançar seus objetivos.",
+    "Você é mais forte do que pensa, e mais capaz do que imagina.",
+    "Desafios fazem parte do processo de crescimento.",
+    "Não tenha medo de falhar, tenha medo de não tentar.",
+    "O sucesso é a soma de pequenos esforços repetidos dia após dia.",
+    "O único limite para o seu sucesso é o quanto você está disposto a trabalhar por isso.",
+    "A verdadeira motivação vem de dentro de você.",
+    "O sucesso não vem de graça, ele é conquistado com esforço.",
+    "Se você acredita que pode, você já está no caminho certo.",
+    "A vitória vai para aqueles que continuam tentando, mesmo quando tudo parece perdido.",
+    "Cada fracasso é uma oportunidade de começar de novo com mais sabedoria.",
+    "Você não precisa ser perfeito, só precisa continuar tentando.",
+    "O sucesso não é para os que desistem, mas para os que persistem.",
+    "Mantenha o foco, continue trabalhando e o sucesso será inevitável.",
+    "Nunca pare de aprender, pois a vida nunca para de ensinar.",
+    "O maior obstáculo para o sucesso é a dúvida sobre si mesmo.",
+    "Coragem não é a ausência do medo, mas a capacidade de seguir em frente apesar dele.",
+    "A vida é feita de escolhas. Se você não escolher, a vida escolhe por você.",
+    "Tudo o que você precisa é acreditar em si mesmo e dar o primeiro passo.",
+    "O sucesso é construído com pequenos passos dados todos os dias.",
+    "Nunca subestime o poder de uma atitude positiva.",
+    "As oportunidades estão ao seu redor, basta ter coragem de aproveitá-las.",
+    "O sucesso é alcançado por aqueles que não desistem diante das dificuldades.",
+    "O único fracasso é aquele que acontece quando você desiste de tentar.",
+    "O segredo para alcançar seus sonhos está em acreditar que você pode.",
+    "Grandes vitórias exigem perseverança e paciência.",
+    "Acredite nos seus sonhos, eles podem se tornar realidade.",
+    "Nada é impossível para uma mente determinada.",
+    "A diferença entre o sucesso e o fracasso é a persistência.",
+    "O maior desafio é começar, depois que você começa, o caminho fica mais claro.",
+    "A maior glória não está em nunca cair, mas em levantar-se sempre que caímos.",
+    "Você é mais do que capaz de alcançar seus objetivos, basta acreditar.",
+    "O sucesso começa quando você decide dar o primeiro passo.",
+    "Os maiores vencedores não são os que nunca falham, mas os que nunca desistem.",
+    "Cada desafio superado é uma vitória no caminho para o sucesso.",
+    "A felicidade não é algo pronto, ela vem das suas próprias ações.",
+    "O segredo para alcançar seus objetivos está em nunca desistir.",
+    "Faça o que você pode, com o que você tem, onde você está.",
+    "A chave para o sucesso está em não parar de tentar.",
+    "Grandes coisas nunca vêm de zonas de conforto.",
+    "Não espere por uma oportunidade, crie-a.",
+    "O futuro pertence àqueles que acreditam na beleza dos seus sonhos.",
+    "A confiança em si mesmo é a chave para o sucesso.",
+    "A vida recompensa os que se dedicam e persistem.",
+    "Você tem tudo o que precisa para ser bem-sucedido.",
+    "O sucesso não acontece da noite para o dia, mas é o resultado de esforço contínuo.",
+    "As dificuldades são temporárias, mas as recompensas do sucesso são eternas.",
+    "O maior medo não é o de falhar, mas de não tentar.",
+    "A jornada do sucesso começa com o primeiro passo em direção ao seu objetivo.",
+    "Você nunca saberá o quão forte é até ser forte ser sua única opção.",
+    "A maior vitória é ser capaz de se levantar depois de cada queda.",
+    "O sucesso não é sobre ser o melhor, mas sim sobre nunca desistir.",
+    "O fracasso é apenas uma lição para o sucesso futuro.",
+    "O sucesso começa quando você decide que não vai desistir.",
+    "Se você acredita em si mesmo, já está no caminho certo.",
+    "O sucesso é alcançado quando você continua tentando, mesmo quando o caminho parece difícil.",
+    "Se você não tiver medo de errar, você terá coragem de acertar.",
+    "A sua determinação hoje define o seu sucesso amanhã.",
+    "As grandes vitórias exigem grande perseverança.",
+    "Não espere por uma chance, crie-a.",
+    "A vida é feita de momentos, faça com que cada momento conte.",
+    "O maior erro é não tentar.",
+    "Nunca subestime o poder de um esforço constante.",
+    "O sucesso vem para aqueles que continuam em frente, não importa o quão difícil seja o caminho.",
+    "Você não precisa ser perfeito, só precisa tentar.",
+    "O caminho para o sucesso é sempre em construção.",
+    "Não desista. Grandes coisas levam tempo.",
+    "Cada passo para frente é um passo mais perto do sucesso.",
+    "A sua mente é a chave para desbloquear o seu sucesso.",
+    "Não espere o momento certo, faça-o acontecer agora.",
+    "A vida recompensa aqueles que estão dispostos a lutar por seus sonhos.",
+    "Não importa o quão difícil seja, sempre há um caminho para o sucesso.",
+    "Acredite que você pode, e você já está no meio do caminho.",
+    "O sucesso é um reflexo da sua atitude e esforço.",
+    "A persistência é a chave para transformar seus sonhos em realidade.",
+    "Nunca desista, o sucesso pode estar a um passo de distância.",
+    "O maior obstáculo para o sucesso é a dúvida sobre si mesmo.",
+    "Acredite no seu potencial e nunca pare de seguir seus sonhos.",
+    "O segredo para alcançar seus objetivos é continuar tentando.",
+    "Grandes coisas são feitas de pequenos passos dados todos os dias.",
+    "Não se preocupe com os obstáculos, eles são parte do processo.",
+    "O sucesso começa com a sua crença de que ele é possível.",
+    "Você é capaz de conquistar mais do que imagina.",
+    "O sucesso é conquistado pelos que não desistem.",
+    "O caminho para a vitória está em nunca parar de tentar.",
+    "Você é capaz de alcançar tudo o que desejar, basta persistir.",
+    "O sucesso é para aqueles que têm coragem de seguir seus sonhos.",
+    "Não existe fórmula mágica, existe trabalho duro e dedicação.",
+    "Tudo o que você precisa para alcançar seus objetivos está dentro de você.",
+    "Grandes vitórias começam com pequenos passos dados com coragem.",
+    "A vida é feita de escolhas. Escolha ser vitorioso.",
+    "O sucesso é o reflexo do esforço contínuo e da determinação.",
+    "Você é mais forte do que imagina e mais capaz do que pensa."
+];
+
+
+
+        function exibirFraseMotivacional() {
+            const indice = Math.floor(Math.random() * frases.length);
+            document.getElementById("frase").textContent = frases[indice];
+        }
+
+        function animarBarraDeProgresso() {
+            const progressBar = document.getElementById("progress-bar");
+            let width = 0;
+            progressBar.style.width = "0%";
+
+            const interval = setInterval(() => {
+                width += 1;
+                progressBar.style.width = width + "%";
+
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        exibirFraseMotivacional();
+                        animarBarraDeProgresso();
+                    }, 500);
+                }
+            }, 150); // Ajuste este valor para controlar a velocidade da animação
+        }
+
+        function iniciarAnimacao() {
+            exibirFraseMotivacional();
+            animarBarraDeProgresso();
+        }
+
+        iniciarAnimacao();
+    </script>
+</body>
+
+</html>
